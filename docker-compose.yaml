@@ -1,0 +1,8 @@
+services:
+  basic-project:
+    image: basic-project
+    build: .
+    tty: true
+    working_dir: /home/${USER}/project
+    volumes:
+      - ./:/home/${USER}/project
