@@ -18,3 +18,12 @@ jobs:
       run: |
         docker build . --file ./dev/Dockerfile --tag basic-project-dev:0.1
         docker build . --file Dockerfile --tag basic-project:$(date +%s)
+  
+  test:
+
+    runs-on: basic-project:latest
+
+    steps:
+      - name: Test echo
+        run: 
+          echo Hello!
