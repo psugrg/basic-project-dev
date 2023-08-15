@@ -15,7 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Base Image
-      run: docker build ./dev --file Dockerfile --tag basic-project-dev:$(date +%s)
-
-    - name: Build the User Image
-      run: docker build . --file Dockerfile --tag basic-project:$(date +%s)
+      run: |
+        docker build . --file ./dev/Dockerfile --tag basic-project-dev:$(date +%s)
+#        docker build . --file Dockerfile --tag basic-project:$(date +%s)
