@@ -1,9 +1,9 @@
 FROM basic-project-dev:0.1
 
 # Default values for the user and group
-ARG USER_ID
+ARG USER_ID=1000
 ARG USER_NAME=user
-ARG GROUP_ID
+ARG GROUP_ID=1000
 ARG GROUP_NAME=user
 
 # Add new user
