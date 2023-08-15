@@ -17,4 +17,4 @@ jobs:
     - name: Build the Base Image
       run: |
         docker build ./dev --file Dockerfile --tag basic-project-dev:$(date +%s)
-        docker build . --file Dockerfile --tag basic-project:$(date +%s)
+#        docker build . --file Dockerfile --tag basic-project:$(date +%s)
