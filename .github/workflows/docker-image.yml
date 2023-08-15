@@ -16,5 +16,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Base Image
       run: |
-        docker build . --file ./dev/Dockerfile --tag basic-project-dev:$(date +%s)
-#        docker build . --file Dockerfile --tag basic-project:$(date +%s)
+        docker build . --file ./dev/Dockerfile --tag basic-project-dev:0.1
+        docker build . --file Dockerfile --tag basic-project:$(date +%s)
