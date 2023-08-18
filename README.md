@@ -56,8 +56,8 @@ Execute the following command from the top level project directory:
 
 ```bash
 docker compose build \
-    --build-arg  user*id=$(id -u ${user}) \
-    --build-arg group*id=$(id -g ${user}) \
+    --build-arg  USER_ID=$(id -u ${user}) \
+    --build-arg GROUP_ID=$(id -g ${user}) \
 && docker compose up -d
 ```
 
