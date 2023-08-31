@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Base Image
+      run: |
+        docker build . --file ./dev/Dockerfile --tag basic-project-dev:0.1
+        docker build . --file Dockerfile --tag basic-project:$(date +%s)
+  
+  test:
+
+    runs-on: basic-project:latest
+
+    steps:
+      - name: Test echo
+        run: 
+          echo Hello!
