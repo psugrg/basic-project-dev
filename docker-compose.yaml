@@ -1,7 +1,10 @@
 services:
   basic-project:
     image: basic-project
-    build: .
+    build:
+      context: .
+      args:
+        BASE_IMAGE: 'basic-project-dev:0.1'
     tty: true
     working_dir: /home/${USER}/project
     volumes:

@@ -1,4 +1,5 @@
-FROM basic-project-dev:0.1
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 # Default values for the user and group
 ARG USER_ID
