@@ -1,6 +1,10 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
+ARG BASE_IMAGE
+# Export a name of the base image as the environment variable accessible from within the docker container
+ENV BASE_IMAGE=${BASE_IMAGE}
+
 # Default values for the user and group
 ARG USER_ID
 ARG USER_NAME=user

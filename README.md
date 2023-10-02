@@ -22,13 +22,13 @@ The docker image is define in the *Dockerfile* and corresponding *docker-compose
 
 This module creates the development environment that contains all tools and elements that are required by the project such as: compiler, debugger, libraries etc.
 
-> The compiled docker image can be uploaded to the repository that holds all released versions of the development environment. This way a developer can just download pre-build version of the development environment without the need of building it himself.
+> 💡 The compiled docker image can be uploaded to the repository that holds all released versions of the development environment. This way a developer can just download pre-build version of the development environment without the need of building it himself.
 
 ### User Image
 
 The top level project directory contains the *Dockerfile* and corresponding *docker-compose.yaml* file that defines the docker image deriving from the *base image*. It creates a user and mounts the current directory containing the project.
 
-> This image should be created manually by each developer in order to create usable development environment.
+> 🔥 This image should be created manually by each developer in order to create usable development environment.
 
 ## Usage
 
@@ -38,7 +38,7 @@ The process is spit into two parts: *creating base image* and *creating user ima
 
 Prepare the development environment by changing the *Dockerfile* and *docker-compose.yaml* file.
 
-> Remember to update the version of the *docker image*.
+> 🔥 Remember to update the version of the *docker image*.
 
 Execute the following command from the `dev/` directory:
 
@@ -52,15 +52,19 @@ At this point the `base image` may be uploaded to the repository or used locally
 
 ### Creating User Image
 
+> 🔥 This step should be performed always when there's a change in the *base image*.
+
 Execute the following command from the top level project directory:
 
 ```bash
 docker compose build \
-    --build-arg  USER_ID=$(id -u ${user}) \
-    --build-arg GROUP_ID=$(id -g ${user}) \
+    --build-arg USER_NAME=${USER} \
+    --build-arg USER_ID=$(id -u ${USER}) \
+    --build-arg GROUP_NAME=${USER} \
+    --build-arg GROUP_ID=$(id -g ${USER}) \
 && docker compose up -d
 ```
 
 This command will use the *base image* to create a dedicated version of the *development environment* for the current user.
 
-> This step should be performed always when there's a change in the *base image*.
+> 💡 Created docker image includes the *BASE_IMAGE* environment variable containing the name of the *Base Image*. This can be use to verify the version of the development environment.
