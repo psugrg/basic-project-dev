@@ -1,0 +1,13 @@
+{
+  "name": "basic-project-dev",
+  "dockerComposeFile": "compose.yaml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/basic-project-dev",
+  "remoteUser": "devuser",
+  "mounts": [
+    tsource=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"
+  ],
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent"
+  }
+}

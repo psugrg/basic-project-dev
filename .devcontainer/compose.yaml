@@ -1,0 +1,15 @@
+services:
+  devcontainer:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      target: development
+    volumes:
+      - ..:/workspaces/basic-project-dev:cached
+      - ${SSH_AUTH_SOCK}:/ssh-agent
+      - ${HOME}/.gitconfig:/home/devuser/.gitconfig
+      - ${HOME}/.gitignore_global:/home/devuser/.gitignore_global
+      - ${HOME}/.config/git/config:/home/devuser/.config/git/config
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    command: sleep infinity
