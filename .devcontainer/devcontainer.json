@@ -1,0 +1,15 @@
+{
+  "name": "basic-project-dev",
+  "dockerComposeFile": "compose.yaml",
+  "service": "my-application",
+  "workspaceFolder": "/workspaces/basic-project-dev",
+  "remoteUser": "devuser",
+  "updateRemoteUserUID": true,
+  "mounts": [
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/devuser/.gitconfig,type=bind"
+  ],
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent"
+  }
+}

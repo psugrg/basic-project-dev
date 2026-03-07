@@ -1,70 +1,58 @@
-# Docker Based Development Environment - Basic Example
+# Basic Devcontainer Setup
 
-The basic example of the *all-in-one* development environment based on [Docker](www.docker.com) and [Docker Compose](https://docs.docker.com/compose/).
+A minimal, reusable Docker devcontainer template for building consistent development environments.
 
-It can be used as a starting point for *any* project that requires a build environment.
+## Features
 
-## Architecture
+- **VS Code Integration**: Ready to use with the Dev Containers extension.
+- **Rootless Support**: Configured with a dedicated `devuser`.
+- **SSH/Git Support**: Automatically mounts `.gitconfig` and handles `SSH_AUTH_SOCK`.
+- **Multi-stage Build**: Includes `development` and `production` stages.
 
-This *basic example project* contains two modules: *base image* and *user image*. First one is used to create an image that contain all tools and dependencies but without a user and a mounted project. Second one is used to add a user and mount a folder with the project.
+## Quick Start (VS Code)
 
-> Inspiration:
-[1](https://jtreminio.com/blog/running-docker-containers-as-current-host-user/),
-[2](https://medium.com/redbubble/running-a-docker-container-as-a-non-root-user-7d2e00f8ee15),
-[3](https://vsupalov.com/docker-shared-permissions/),
-[4](https://medium.com/faun/set-current-host-user-for-docker-container-4e521cef9ffc).
+1. Open this folder in VS Code.
+2. Ensure the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) is installed.
+3. Click the green button in the bottom-left corner and select **Reopen in Container**.
 
-### Base Image
+## Manual Usage
 
-The `dev/` directory contains the *base image* that holds the definition of the actual build system.
-
-The docker image is define in the *Dockerfile* and corresponding *docker-compose.yaml* file contains the build rules.
-
-This module creates the development environment that contains all tools and elements that are required by the project such as: compiler, debugger, libraries etc.
-
-> 💡 The compiled docker image can be uploaded to the repository that holds all released versions of the development environment. This way a developer can just download pre-build version of the development environment without the need of building it himself.
-
-### User Image
-
-The top level project directory contains the *Dockerfile* and corresponding *docker-compose.yaml* file that defines the docker image deriving from the *base image*. It creates a user and mounts the current directory containing the project.
-
-> 🔥 This image should be created manually by each developer in order to create usable development environment.
-
-## Usage
-
-The process is spit into two parts: *creating base image* and *creating user image*.
-
-### Creating Base Image
-
-Prepare the development environment by changing the *Dockerfile* and *docker-compose.yaml* file.
-
-> 🔥 Remember to update the version of the *docker image*.
-
-Execute the following command from the `dev/` directory:
+### Devcontainer CLI
 
 ```bash
-docker compose build
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . bash
 ```
 
-At this point the `base image` may be uploaded to the repository or used locally by the next step (Creating User Image).
-
-> This step should be done always when there's a need of adding something to the *development environment*.
-
-### Creating User Image
-
-> 🔥 This step should be performed always when there's a change in the *base image*.
-
-Execute the following command from the top level project directory:
+### Docker Compose
 
 ```bash
-docker compose build \
-    --build-arg USER_NAME=${USER} \
-    --build-arg USER_ID=$(id -u ${USER}) \
-    --build-arg GROUP_NAME=${USER} \
-    --build-arg GROUP_ID=$(id -g ${USER}) \
-&& docker compose up -d
+docker compose -f .devcontainer/compose.yaml build
+docker compose -f .devcontainer/compose.yaml up -d
+docker compose -f .devcontainer/compose.yaml exec my-application bash
 ```
 
-This command will use the *base image* to create a dedicated version of the *development environment* for the current user.
+## Production Stage
 
-> 💡 Created docker image includes the *BASE_IMAGE* environment variable containing the name of the *Base Image*. This can be use to verify the version of the development environment.
+To build and run the production image:
+
+```bash
+docker build --target production -t my-app -f .devcontainer/Dockerfile .
+docker run --rm my-app
+```
+
+Or via Docker Compose:
+
+```bash
+docker compose -f .devcontainer/compose.yaml build my-application --build-arg target=production
+docker compose -f .devcontainer/compose.yaml up my-application
+```
+
+## Structure
+
+- `.devcontainer/`: Container configuration (Dockerfile, compose.yaml, devcontainer.json).
+- `src/`: Project source code (includes `example.sh` script).
+
+## License
+
+[MIT](LICENSE)

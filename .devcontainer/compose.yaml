@@ -1,0 +1,11 @@
+services:
+  my-application:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      target: development
+    volumes:
+      - ..:/workspaces/basic-project-dev:cached
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    command: sleep infinity

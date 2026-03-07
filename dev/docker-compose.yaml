@@ -1,4 +1,0 @@
-services:
-  basic-project-dev:
-    image: basic-project-dev:0.1
-    build: .
