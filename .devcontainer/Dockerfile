@@ -1,30 +1,31 @@
-FROM ubuntu:22.04 AS development
-
-ARG USERNAME=devuser
-ARG USER_UID=1000
-ARG USER_GID=1000
+FROM ubuntu:24.04 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    ca-certificates \
     curl \
+  && rm -rf /var/lib/apt/lists/*
+
+FROM base AS development
+
+# Ubuntu 24.04 has a default user `ubuntu` that we want to remove
+RUN userdel -r ubuntu
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ca-certificates \
     git \
     openssh-client \
     sudo \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN groupadd --gid ${USER_GID} ${USERNAME} \
-  && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
-  && mkdir -p /home/${USERNAME}/.config/git \
-  && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.config \
-  && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
-  && chmod 0440 /etc/sudoers.d/${USERNAME}
+  && rm -rf /var/lib/apt/lists/* \
+  && useradd -m -s /bin/bash devuser \
+  && echo "devuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/devuser \
+  && chmod 0440 /etc/sudoers.d/devuser
 
 WORKDIR /workspaces/basic-project-dev
 
-FROM ubuntu:22.04 AS production
+FROM base AS production
 
 WORKDIR /app
 
